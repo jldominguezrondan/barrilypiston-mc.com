@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon64.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<title>Barril &amp; Pistón · Custom MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Oswald:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1014; --bg2:#151a20; --panel:#1b2129; --line:#2b333d;
+    --text:#e8e2d6; --muted:#9a9488; --brass:#c9a46a; --brass2:#8c6b3c; --rust:#a4472b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:"Source Serif 4",Georgia,serif;font-size:17px;line-height:1.6;
+    background-image:radial-gradient(ellipse at top,#1a2028 0%,transparent 60%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
+  a{color:var(--brass)}
+  h1,h2,h3{font-family:"Rye",serif;font-weight:400;letter-spacing:.02em;line-height:1.15}
+  .eyebrow{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.25em;font-size:.78rem;color:var(--brass)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;background:rgba(13,16,20,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:14px;height:62px}
+  nav img{height:46px;width:auto;border-radius:6px}
+  nav .brand{font-family:"Rye",serif;font-size:1.05rem;color:var(--text);text-decoration:none;white-space:nowrap}
+  nav ul{list-style:none;display:flex;gap:22px;margin-left:auto}
+  nav ul a{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;color:var(--muted);text-decoration:none}
+  nav ul a:hover{color:var(--brass)}
+  @media (max-width:760px){nav ul{display:none}}
+
+  /* hero */
+  .hero{position:relative;padding:34px 0 10px}
+  .video-frame{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);background:#000}
+  .video-frame video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+  .vctl{position:absolute;right:14px;bottom:14px;display:flex;gap:8px}
+  .vctl button{font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;background:rgba(0,0,0,.65);color:var(--text);border:1px solid var(--brass2);padding:8px 12px;border-radius:999px;cursor:pointer}
+  .vctl button:hover{border-color:var(--brass);color:var(--brass)}
+  .hero-text{text-align:center;padding:38px 0 10px}
+  .hero-text h1{font-size:clamp(2.2rem,6vw,4rem);color:var(--brass)}
+  .hero-text p.lead{max-width:680px;margin:14px auto 0;color:var(--muted);font-size:1.12rem;font-style:italic}
+
+  section{padding:76px 0;border-top:1px solid var(--line)}
+  section h2{font-size:clamp(1.8rem,4vw,2.6rem);margin:8px 0 18px}
+  .two{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+  @media (max-width:860px){.two{grid-template-columns:1fr}}
+  .two p+p{margin-top:14px}
+  .logo-card{max-width:420px;justify-self:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .logo-card img{width:100%;border-radius:8px;display:block}
+  .stats{display:flex;gap:28px;margin-top:26px;flex-wrap:wrap}
+  .stats div{font-family:"Oswald",sans-serif}
+  .stats b{display:block;font-size:2rem;color:var(--brass);font-weight:700;line-height:1}
+  .stats span{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+  /* bikes */
+  .feature{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:30px}
+  @media (max-width:860px){.feature{grid-template-columns:1fr}}
+  .bike{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .bike .art{background:radial-gradient(ellipse at 50% 85%,rgba(201,164,106,.18),transparent 65%),#11151a;padding:18px 10px 4px}
+  .bike svg{width:100%;height:auto;display:block}
+  .bike .body{padding:20px 22px 24px}
+  .bike h3{font-size:1.5rem;color:var(--text)}
+  .bike .make{font-family:"Oswald",sans-serif;letter-spacing:.18em;text-transform:uppercase;font-size:.75rem;color:var(--brass)}
+  .bike p{color:var(--muted);margin-top:10px;font-size:.98rem}
+  .specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+  .specs div{background:#0f1317;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-family:"Oswald",sans-serif}
+  .specs small{display:block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .specs strong{font-size:.9rem;color:var(--text);font-weight:600}
+
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  @media (max-width:860px){.gallery{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.gallery{grid-template-columns:1fr}}
+  .gallery .bike h3{font-size:1.15rem}
+  .gallery .bike .body{padding:14px 16px 18px}
+  .gallery .bike p{font-size:.9rem}
+  .note{margin-top:20px;font-size:.85rem;color:var(--muted);font-style:italic}
+
+  /* members */
+  .members{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}
+  @media (max-width:860px){.members{grid-template-columns:1fr}}
+  .member{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px;text-align:center}
+  .member::before{content:"";position:absolute;inset:6px;border:1px dashed rgba(201,164,106,.25);border-radius:10px;pointer-events:none}
+  .patch{width:88px;height:88px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#3a3f47,#15191e);border:3px solid var(--brass2);box-shadow:inset 0 0 0 4px #0f1317,0 8px 20px rgba(0,0,0,.5);font-family:"Rye",serif;font-size:2rem;color:var(--brass)}
+  .member h3{font-size:1.6rem}
+  .member .role{font-family:"Oswald",sans-serif;letter-spacing:.2em;text-transform:uppercase;font-size:.72rem;color:var(--brass);margin-top:4px}
+  .member p{color:var(--muted);margin-top:12px;font-size:.95rem}
+  .member .ride{margin-top:14px;font-family:"Oswald",sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text);border-top:1px solid var(--line);padding-top:12px}
+
+  /* code + routes */
+  .code{counter-reset:c;display:grid;grid-template-columns:repeat(2,1fr);gap:16px 34px;margin-top:26px;list-style:none}
+  @media (max-width:760px){.code{grid-template-columns:1fr}}
+  .code li{counter-increment:c;display:flex;gap:16px;align-items:flex-start}
+  .code li::before{content:counter(c,upper-roman);font-family:"Rye",serif;color:var(--brass);font-size:1.3rem;min-width:44px}
+  .routes{margin-top:26px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .route{display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .route:last-child{border-bottom:0}
+  .route .date{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.12em;color:var(--brass);font-size:.9rem}
+  .route h3{font-family:"Oswald",sans-serif;font-weight:600;font-size:1.1rem;letter-spacing:.04em}
+  .route p{color:var(--muted);font-size:.9rem}
+  .route .km{font-family:"Oswald",sans-serif;font-size:1.2rem;color:var(--text)}
+  @media (max-width:600px){.route{grid-template-columns:1fr}}
+
+  footer{border-top:1px solid var(--line);padding:46px 0 60px;text-align:center;color:var(--muted)}
+  footer img{width:140px;border-radius:10px;margin-bottom:14px;opacity:.9}
+  footer .motto{font-family:"Rye",serif;color:var(--brass);font-size:1.2rem}
+  .rockbtn{position:fixed;left:18px;bottom:18px;z-index:30;font-family:"Oswald",sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;background:rgba(13,16,20,.9);color:var(--brass);border:1px solid var(--brass);padding:11px 16px;border-radius:999px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+  .rockbtn.on{background:var(--brass);color:#14110c}
+  .rockbtn.on::after{content:"";display:inline-block;width:7px;height:7px;margin-left:9px;border-radius:50%;background:#a4472b;animation:pulse .5s infinite alternate}
+  @keyframes pulse{to{opacity:.2}}
+  .bike .art.photo{padding:0;background:#000}
+  .bike .art.photo img{display:block;width:100%;aspect-ratio:400/225;object-fit:cover;object-position:50% 60%}
+  .banner{margin-top:28px;border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative}
+  .banner img{display:block;width:100%;aspect-ratio:21/9;object-fit:cover;object-position:50% 45%}
+  .banner.brindis img{aspect-ratio:4/3;object-position:50% 40%}
+  @media (max-width:600px){.banner.brindis img{aspect-ratio:4/5}}
+  .banner figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 22px 16px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;color:var(--text)}
+  .cronicas{columns:3 300px;column-gap:18px;margin-top:30px}
+  .cronicas figure{break-inside:avoid;margin:0 0 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:zoom-in;transition:transform .2s,border-color .2s}
+  .cronicas figure:hover{transform:translateY(-3px);border-color:var(--brass2)}
+  .cronicas img{display:block;width:100%;height:auto}
+  .cronicas figcaption{padding:12px 16px 14px}
+  .cronicas figcaption b{display:block;font-family:"Oswald",sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.9rem;color:var(--brass)}
+  .cronicas figcaption span{font-size:.9rem;color:var(--muted)}
+  .lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,6,8,.94);display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px;cursor:zoom-out}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:100%;max-height:84vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+  .lightbox p{margin-top:12px;color:var(--text);font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.85rem;text-align:center}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="chrome" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#f4f4f2"/><stop offset=".5" stop-color="#9aa0a6"/><stop offset="1" stop-color="#3a3f45"/></radialGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9dcdf"/><stop offset="1" stop-color="#5d6268"/></linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <g id="wheel">
+      <circle r="50" fill="#0b0d10"/>
+      <circle r="50" fill="none" stroke="#1d2126" stroke-width="12"/>
+      <circle r="38" fill="none" stroke="url(#steel)" stroke-width="3"/>
+      <g stroke="#8d939a" stroke-width="1.2">
+        <line x1="-36" y1="0" x2="36" y2="0"/><line x1="0" y1="-36" x2="0" y2="36"/>
+        <line x1="-25" y1="-25" x2="25" y2="25"/><line x1="-25" y1="25" x2="25" y2="-25"/>
+        <line x1="-33" y1="-14" x2="33" y2="14"/><line x1="-33" y1="14" x2="33" y2="-14"/>
+        <line x1="-14" y1="-33" x2="14" y2="33"/><line x1="-14" y1="33" x2="14" y2="-33"/>
+      </g>
+      <circle r="9" fill="url(#chrome)"/>
+    </g>
+    <!-- Generic long, low cruiser. Paint colour comes from currentColor. -->
+    <g id="cruiser">
+      <ellipse cx="205" cy="212" rx="170" ry="7" fill="#000" opacity=".55"/>
+      <use href="#wheel" x="92" y="160"/>
+      <use href="#wheel" x="322" y="160"/>
+      <!-- frame -->
+      <path d="M92 160 L150 120 L250 104 L292 70 M150 120 L180 158 L250 156 L262 108" fill="none" stroke="#1c1f24" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- exhausts -->
+      <path d="M200 148 C170 168 120 170 40 166" fill="none" stroke="url(#chrome)" stroke-width="9" stroke-linecap="round"/>
+      <path d="M222 150 C190 176 130 180 46 178" fill="none" stroke="url(#chrome)" stroke-width="9" stroke-linecap="round"/>
+      <!-- V-twin -->
+      <g>
+        <rect x="186" y="112" width="58" height="44" rx="10" fill="#2a2e34"/>
+        <path d="M190 116 l-10 -26 h26 l8 26z" fill="#4a4f56"/>
+        <path d="M236 116 l10 -26 h-26 l-8 26z" fill="#4a4f56"/>
+        <g stroke="#9aa0a6" stroke-width="2"><line x1="182" y1="96" x2="208" y2="96"/><line x1="184" y1="102" x2="210" y2="102"/><line x1="186" y1="108" x2="212" y2="108"/><line x1="220" y1="96" x2="246" y2="96"/><line x1="218" y1="102" x2="244" y2="102"/><line x1="216" y1="108" x2="242" y2="108"/></g>
+        <circle cx="215" cy="136" r="12" fill="url(#chrome)"/>
+      </g>
+      <!-- rear fender -->
+      <path d="M30 150 C40 96 120 88 160 116 L150 124 C120 104 62 108 50 152z" fill="var(--fend,currentColor)"/>
+      <path d="M30 150 C40 96 120 88 160 116 L150 124 C120 104 62 108 50 152z" fill="url(#shine)"/>
+      <!-- seat -->
+      <path d="M118 108 C130 92 160 96 176 100 C186 88 196 86 200 92 L196 106 C170 110 140 114 118 114z" fill="#17120e"/>
+      <!-- tank -->
+      <path d="M190 92 C204 66 266 62 284 78 C288 90 276 100 258 102 L196 104z" fill="currentColor"/>
+      <path d="M190 92 C204 66 266 62 284 78 C288 90 276 100 258 102 L196 104z" fill="url(#shine)"/>
+      <path d="M208 86 C230 78 258 78 272 84" stroke="var(--pin,#c9a46a)" stroke-width="2.4" fill="none"/>
+      <!-- fork & front -->
+      <line x1="294" y1="62" x2="322" y2="160" stroke="url(#chrome)" stroke-width="8" stroke-linecap="round"/>
+      <path d="M282 122 C300 98 352 98 362 132 L350 134 C340 112 306 112 294 128z" fill="var(--fend,currentColor)"/>
+      <path d="M282 122 C300 98 352 98 362 132 L350 134 C340 112 306 112 294 128z" fill="url(#shine)"/>
+      <circle cx="306" cy="74" r="14" fill="url(#chrome)"/><circle cx="309" cy="74" r="9" fill="#fff8e0"/>
+      <!-- bars -->
+      <path d="M292 62 C282 46 268 40 256 44" fill="none" stroke="url(#chrome)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M296 58 C300 46 306 40 318 38" fill="none" stroke="#1c1f24" stroke-width="3"/>
+      <!-- taillight -->
+      <circle cx="34" cy="132" r="4" fill="#c4372a"/>
+    </g>
+  </defs>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <img src="badge.jpg" alt="Escudo Barril & Pistón">
+    <a class="brand" href="#top">Barril &amp; Pistón Custom</a>
+    <ul>
+      <li><a href="#club">El club</a></li>
+      <li><a href="#maquinas">Máquinas</a></li>
+      <li><a href="#honor">Miembros</a></li>
+      <li><a href="#cronicas">Crónicas</a></li>
+      <li><a href="#rutas">Rutas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="video-frame">
+      <video id="intro" src="intro.mp4" poster="poster.jpg" autoplay muted playsinline></video>
+      <div class="vctl">
+        <button id="replay" type="button">↺ Repetir</button>
+      </div>
+    </div>
+    <div class="hero-text">
+      <div class="eyebrow">Club Motero · Fundado entre barriles y gasolina</div>
+      <h1>Barril &amp; Pistón</h1>
+      <p class="lead">Tres amigos, dos cilindros en V y una carretera que nunca se acaba. Rodamos despacio, paramos donde haya buena sombra y volvemos siempre juntos.</p>
+    </div>
+  </div>
+</header>
+
+<section id="club">
+  <div class="wrap two">
+    <div>
+      <div class="eyebrow">Nuestra historia</div>
+      <h2>Una idea en el paddock</h2>
+      <p>Mucho antes de tener nombre ya éramos un club: miles de kilómetros juntos, desayunos en ventas de carretera, puertos de montaña y alguna que otra tormenta. Solo nos faltaba darnos cuenta.</p>
+      <p>Pasó en el Circuito de Jerez. Habíamos ido a ver las carreras de Baggers, esas motazas de gran cilindrada que nunca nos imaginamos tumbando así en curva. Entre carrera y carrera, con el olor a goma quemada en el aire y el rugido de los V-twin todavía en los oídos, a uno se le escapó la pregunta: <em>“¿Y si le ponemos nombre a esto?”</em></p>
+      <p>No hizo falta votar. Antes de que saliera la siguiente manga ya teníamos claro el escudo: dos pistones con forma de barril, porque nos gusta igual el motor que la sobremesa; la cadena que nos une; las alas para cuando la carretera se pone bonita, y fuego, mucho fuego, para cuando se abre gas.</p>
+      <p>Así nació Barril &amp; Pistón. No somos muchos, pero somos de los que se esperan en cada rotonda.</p>
+      <div class="stats">
+        <div><b>3</b><span>Miembros de honor</span></div>
+        <div><b>2</b><span>Cilindros por moto</span></div>
+        <div><b>∞</b><span>Kilómetros pendientes</span></div>
+      </div>
+    </div>
+    <div class="logo-card"><img src="logo.jpg" alt="Logotipo Barril & Pistón Custom MG"></div>
+  </div>
+</section>
+
+<section id="maquinas">
+  <div class="wrap">
+    <div class="eyebrow">El garaje</div>
+    <h2>Nuestras máquinas</h2>
+    <p style="color:var(--muted);max-width:720px">Custom de verdad: bajas, largas y con el cromo justo para que brillen al atardecer. Estas tres son el alma del club.</p>
+
+    <div class="feature">
+      <article class="bike">
+        <div class="art photo"><img src="img/volusia.jpg" alt="Suzuki Intruder 800 Volusia negra y blanca de Hannibal" style="object-position:50% 55%"></div>
+        <div class="body">
+          <div class="make">Suzuki · Intruder 800 Volusia</div>
+          <h3>“Blanco y Negro”</h3>
+          <p>La veterana del club. Bitono negro y blanco, guardabarros envolventes, respaldo, alforjas, mucho cromo y ese V-twin grave que se oye antes de verla llegar. Ha cruzado más puertos que cualquiera de nosotros y sigue arrancando a la primera en enero.</p>
+          <div class="specs">
+            <div><small>Motor</small><strong>V-twin 805 cc</strong></div>
+            <div><small>Estilo</small><strong>Cruiser bitono</strong></div>
+            <div><small>Piloto</small><strong>Hannibal</strong></div>
+          </div>
+        </div>
+      </article>
+      <article class="bike">
+        <div class="art photo"><img src="img/vn900.jpg" alt="Kawasaki Vulcan VN900 negra de Jose, La Brújula"></div>
+        <div class="body">
+          <div class="make">Kawasaki · Vulcan VN900</div>
+          <h3>“La Brújula”</h3>
+          <p>Siempre la primera de la fila. Negra brillante, con parabrisas, alforjas rígidas y el GPS en el manillar: si la Brújula gira, el club gira detrás. Par a raudales desde abajo y postura de sofá para abrir camino durante cientos de kilómetros.</p>
+          <div class="specs">
+            <div><small>Motor</small><strong>V-twin 903 cc</strong></div>
+            <div><small>Estilo</small><strong>Cruiser touring</strong></div>
+            <div><small>Piloto</small><strong>Jose</strong></div>
+          </div>
+        </div>
+      </article>
+      <article class="bike">
+        <div class="art photo"><img src="img/vulcans.jpg" alt="Kawasaki Vulcan S 650 negra mate de Alex en una bodega de barriles" style="object-position:50% 62%"></div>
+        <div class="body">
+          <div class="make">Kawasaki · Vulcan S 650</div>
+          <h3>“Sombra”</h3>
+          <p>Negra mate de arriba abajo, cúpula oscura y escape deportivo con colectores dorados. Posó entre barriles de bodega, como manda el escudo del club. Asiento bajo y una suavidad que engaña: cuando abres gas, la Sombra es la primera en llegar al bar del final de la ruta.</p>
+          <div class="specs">
+            <div><small>Motor</small><strong>Bicilíndrico 649 cc</strong></div>
+            <div><small>Estilo</small><strong>Cruiser deportiva</strong></div>
+            <div><small>Piloto</small><strong>Alex</strong></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+<section id="honor">
+  <div class="wrap">
+    <div class="eyebrow">Parche de honor</div>
+    <h2>Miembros honoríficos</h2>
+    <p style="color:var(--muted);max-width:720px">Los tres que lo empezaron todo. Llevan el parche completo y la última palabra en cualquier discusión sobre rutas, mecánica o cerveza.</p>
+    <figure class="banner brindis"><img src="img/brindis.jpg" alt="Los tres miembros brindando al atardecer con las chaquetas de Barril & Pistón"><figcaption>Chaquetas del club, jarras en alto y el sol cayendo detrás de las motos</figcaption></figure>
+    <div class="members">
+      <div class="member">
+        <div class="patch">H</div>
+        <h3>Hannibal</h3>
+        <div class="role">Veterano de la carretera</div>
+        <p>Tantos kilómetros como su Volusia y la misma calma al manillar. Conoce cada bar con terraza y cada pueblo blanco de la sierra, y siempre tiene una historia de la última salida. Si dice “un poco más”, son cien kilómetros.</p>
+        <div class="ride">Rueda en: Suzuki Intruder 800 Volusia</div>
+      </div>
+      <div class="member">
+        <div class="patch">A</div>
+        <h3>Alex</h3>
+        <div class="role">Jefe de taller</div>
+        <p>Llave inglesa en una mano, trapo en la otra. No hay ruido raro que se le escape ni tornillo que no haya apretado dos veces. El club rueda porque Alex revisa.</p>
+        <div class="ride">Rueda en: Kawasaki Vulcan S 650</div>
+      </div>
+      <div class="member">
+        <div class="patch">J</div>
+        <h3>Jose</h3>
+        <div class="role">Guía de ruta</div>
+        <p>Abre cada salida con el GPS en el manillar de la Brújula. Elige las curvas buenas, marca el ritmo y mira por el retrovisor para que nadie se quede atrás. Y cuando se para el motor, hace las fotos y escribe las crónicas.</p>
+        <div class="ride">Rueda en: Kawasaki Vulcan VN900</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cronicas">
+  <div class="wrap">
+    <div class="eyebrow">Diario de ruta</div>
+    <h2>Crónicas en fotos</h2>
+    <p style="color:var(--muted);max-width:720px">Kilómetros que ya están en el cuentakilómetros… y en el móvil. Pulsa en cualquier foto para verla en grande.</p>
+    <div class="cronicas">
+      <figure><img src="img/hannibal.jpg" alt="Hannibal junto a su Suzuki Intruder Volusia en un pueblo blanco de la sierra" loading="lazy"><figcaption><b>Hannibal y su Volusia</b><span>Parada en un pueblo blanco a los pies de la sierra. Siempre encuentra la mejor plaza para aparcar.</span></figcaption></figure>
+      <figure><img src="img/circuito.jpg" alt="Los tres miembros al atardecer sobre un circuito" loading="lazy"><figcaption><b>Atardecer en el circuito</b><span>Desde lo alto de la grada, con el trazado a los pies y la luz dorada de despedida.</span></figcaption></figure>
+      <figure><img src="img/faro2.jpg" alt="Entrada en caravana a la concentración de Faro" loading="lazy"><figcaption><b>43ª Concentración de Faro</b><span>Entrando bajo el arco, en fila y con los cuernos en alto. Portugal nos recibió como en casa.</span></figcaption></figure>
+      <figure><img src="img/pinar.jpg" alt="Miembro del club con su Vulcan en una carretera de montaña con buitres sobrevolando" loading="lazy"><figcaption><b>Escolta de buitres</b><span>Parada entre pinos en plena sierra. Contamos más de cien sobrevolando la moto.</span></figcaption></figure>
+      <figure><img src="img/lasnieves.jpg" alt="Los tres miembros junto a sus motos en una estación de servicio" loading="lazy"><figcaption><b>Parada técnica en Las Nieves</b><span>Gasolina, agua fría y las motos cargadas hasta arriba rumbo a la concentración.</span></figcaption></figure>
+      <figure><img src="img/galis.jpg" alt="Dos miembros del club sonriendo frente a una venta de carretera" loading="lazy"><figcaption><b>Venta del Puerto de Galis</b><span>Sol de invierno, barriles en la puerta y un buen desayuno a mitad de puerto.</span></figcaption></figure>
+      <figure><img src="img/faro1.jpg" alt="Motos y moteros esperando en la concentración de Faro" loading="lazy"><figcaption><b>Cola de campeones</b><span>Tienda de campaña bien amarrada y ganas de rodar. La espera también es parte del viaje.</span></figcaption></figure>
+      <figure><img src="img/paddock.jpg" alt="Los tres miembros en el paddock junto a motos bagger de competición" loading="lazy"><figcaption><b>Paddock de las baggers</b><span>Mirando de cerca las baggers de carreras… y apuntando ideas para nuestras custom.</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lb" role="dialog" aria-modal="true"><img id="lbimg" alt=""><p id="lbcap"></p></div>
+
+<section id="codigo">
+  <div class="wrap">
+    <div class="eyebrow">Lo que nos une</div>
+    <h2>Código Barril &amp; Pistón</h2>
+    <ol class="code">
+      <li><div><strong>Nadie se queda atrás.</strong> Se rueda al ritmo del más lento y se espera en cada cruce.</div></li>
+      <li><div><strong>Primero la moto, luego el barril.</strong> Cerveza solo cuando la llave está en el bolsillo.</div></li>
+      <li><div><strong>El casco no se negocia.</strong> Ni para ir a la vuelta de la esquina.</div></li>
+      <li><div><strong>Se saluda a todo motero.</strong> Mano izquierda abajo, siempre.</div></li>
+      <li><div><strong>El taller es de todos.</strong> Quien sabe, enseña; quien no, aprende y trae los bocadillos.</div></li>
+      <li><div><strong>La carretera manda.</strong> Si llueve, se para; si sale el sol, se sigue.</div></li>
+    </ol>
+  </div>
+</section>
+
+<section id="rutas">
+  <div class="wrap">
+    <div class="eyebrow">Salimos desde Jerez y El Puerto de Santa María</div>
+    <h2>Nuestras rutas habituales</h2>
+    <p style="color:var(--muted);max-width:720px">Las que nunca fallan. La Brújula abre camino y el resto, detrás.</p>
+    <div class="routes">
+      <div class="route"><div class="date">Desayuno</div><div><h3>La Cartuja → Cortijo de los Monteros</h3><p>Salida desde el Monasterio de la Cartuja de Jerez y desayuno en el Cortijo de los Monteros, en Benalup.</p></div><div class="km">Mañana</div></div>
+      <div class="route"><div class="date">Desayuno</div><div><h3>La Palmosa por Alcalá de los Gazules</h3><p>Carreteras de campo gaditano, paso por Alcalá de los Gazules y parada para desayunar en La Palmosa.</p></div><div class="km">Mañana</div></div>
+      <div class="route"><div class="date">Desayuno + sierra</div><div><h3>Puerto Galiz → Ubrique</h3><p>Desayuno en la venta del Puerto Galiz y después a Ubrique, a rodar por las curvas de su sierra.</p></div><div class="km">Día</div></div>
+      <div class="route"><div class="date">Día completo</div><div><h3>Vuelta al Peñón</h3><p>Hasta Gibraltar por carreteras secundarias, rodeando todo el Peñón y atravesándolo por sus túneles.</p></div><div class="km">Día</div></div>
+      <div class="route"><div class="date">Día completo</div><div><h3>Ronda</h3><p>Curvas de sierra hasta la ciudad del Tajo y foto obligada en el Puente Nuevo.</p></div><div class="km">Día</div></div>
+      <div class="route"><div class="date">Julio · Fin de semana</div><div><h3>Faro (Portugal)</h3><p>Alforjas cargadas, tienda de campaña amarrada y rumbo a la concentración internacional de Faro, cada mes de julio.</p></div><div class="km">Julio</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="badge.jpg" alt="">
+    <div class="motto">Dos pistones, un barril, una familia.</div>
+    <p style="margin-top:10px">Barril &amp; Pistón · Custom MG</p>
+  </div>
+</footer>
+
+<script>
+  const v = document.getElementById('intro');
+</script>
+<script>
+  (() => {
+    const lb = document.getElementById('lb'), im = document.getElementById('lbimg'), cap = document.getElementById('lbcap');
+    document.querySelectorAll('.cronicas figure, .banner').forEach(f => f.addEventListener('click', () => {
+      const i = f.querySelector('img'); im.src = i.src; im.alt = i.alt;
+      const b = f.querySelector('figcaption b'); cap.textContent = b ? b.textContent : (f.querySelector('figcaption')||{}).textContent || '';
+      lb.classList.add('open');
+    }));
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+  })();
+</script>
+<button class="rockbtn" id="rock" type="button">🎸 Poner rock</button>
+<script>
+/* Riff de rock original, sintetizado en el navegador (batería + guitarra distorsionada + bajo). */
+(() => {
+  const btn = document.getElementById('rock');
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) { btn.remove(); return; }
+  let ctx, master, guitarBus, noiseBuf, timer, playing = false, step = 0, nextTime = 0;
+  const BPM = 126, S16 = 60 / BPM / 4;
+  const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+  // 4 compases en corcheas (8 por compás). null = silencio
+  const riff = [40,40,40,40,40,40,43,45, 40,40,40,40,38,38,36,35,
+                40,40,40,40,40,40,43,45, 45,45,43,43,38,38,40,null];
+  function setup() {
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = 0.32;
+    const comp = ctx.createDynamicsCompressor(); master.connect(comp); comp.connect(ctx.destination);
+    // distorsión
+    const shaper = ctx.createWaveShaper(); const n = 2048, curve = new Float32Array(n), k = 260;
+    for (let i = 0; i < n; i++) { const x = i * 2 / n - 1; curve[i] = (3 + k) * x * 20 * Math.PI / 180 / (Math.PI + k * Math.abs(x)); }
+    shaper.curve = curve; shaper.oversample = '4x';
+    const pre = ctx.createGain(); pre.gain.value = 2.2;
+    const cab = ctx.createBiquadFilter(); cab.type = 'lowpass'; cab.frequency.value = 3200; cab.Q.value = 0.8;
+    const mid = ctx.createBiquadFilter(); mid.type = 'peaking'; mid.frequency.value = 900; mid.gain.value = 4;
+    const out = ctx.createGain(); out.gain.value = 0.5;
+    pre.connect(shaper); shaper.connect(mid); mid.connect(cab); cab.connect(out); out.connect(master);
+    guitarBus = pre;
+    noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  function env(g, t, a, peak, dec) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + dec); }
+  function kick(t) { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(42, t + .12); env(g, t, .003, 1.1, .35); o.connect(g); g.connect(master); o.start(t); o.stop(t + .4); }
+  function noise(t, hp, peak, dec) { const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); src.buffer = noiseBuf; f.type = 'highpass'; f.frequency.value = hp; env(g, t, .002, peak, dec); src.connect(f); f.connect(g); g.connect(master); src.start(t); src.stop(t + dec + .05); }
+  function snare(t) { noise(t, 1200, .7, .22); const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'triangle'; o.frequency.value = 190; env(g, t, .002, .4, .12); o.connect(g); g.connect(master); o.start(t); o.stop(t + .15); }
+  function hat(t, open) { noise(t, 7500, open ? .22 : .14, open ? .18 : .045); }
+  function chord(t, root, len) {
+    [0, 7, 12].forEach((iv, i) => [-6, 6].forEach(det => {
+      const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'sawtooth'; o.frequency.value = mtof(root + iv); o.detune.value = det;
+      env(g, t, .004, i === 0 ? .22 : .15, len); o.connect(g); g.connect(guitarBus); o.start(t); o.stop(t + len + .05);
+    }));
+    const b = ctx.createOscillator(), bg = ctx.createGain(), bf = ctx.createBiquadFilter(); b.type = 'square'; b.frequency.value = mtof(root - 12); bf.type = 'lowpass'; bf.frequency.value = 420;
+    env(bg, t, .005, .35, len * .95); b.connect(bf); bf.connect(bg); bg.connect(master); b.start(t); b.stop(t + len + .05);
+  }
+  function schedule(i, t) {
+    const inBar = i % 16;
+    if (inBar === 0 || inBar === 8 || inBar === 10) kick(t);
+    if (inBar === 4 || inBar === 12) snare(t);
+    if (i % 2 === 0) hat(t, inBar === 14);
+    if (i % 2 === 0) { const r = riff[(i / 2) % riff.length]; if (r != null) chord(t, r, S16 * 1.8); }
+  }
+  function tick() { while (nextTime < ctx.currentTime + 0.12) { schedule(step, nextTime); step = (step + 1) % 64; nextTime += S16; } }
+  btn.addEventListener('click', async () => {
+    try {
+      if (!ctx) setup();
+      if (!playing) {
+        await ctx.resume(); step = 0; nextTime = ctx.currentTime + 0.05;
+        master.gain.setValueAtTime(0.32, ctx.currentTime);
+        timer = setInterval(tick, 25); playing = true;
+        btn.textContent = '🎸 Rock sonando'; btn.classList.add('on');
+      } else {
+        clearInterval(timer); master.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.05); playing = false;
+        btn.textContent = '🎸 Poner rock'; btn.classList.remove('on');
+      }
+    } catch (e) { btn.textContent = '🎸 Audio no disponible'; }
+  });
+})();
+</script>
+</body>
+</html>
